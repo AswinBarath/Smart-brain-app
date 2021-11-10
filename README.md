@@ -32,19 +32,19 @@ and hashed passwords
 ### Home Page
 
 <p>
-<img src="assets/Smart Brain App - Home Page.png" alt="Smart Brain App Cover design" width=800px />
+<img src="assets/Smart Brain App Home Page.PNG" alt="Smart Brain App Home Page" width=800px />
 </p>
 
 ### User Registeration Page
 
 <p>
-<img src="assets/Smart Brain App - Register Page.png" alt="Smart Brain App Cover design" width=800px />
+<img src="assets/Smart Brain App Register Page.PNG" alt="Smart Brain App Register Page" width=800px />
 </p>
 
 ### User Login Page
 
 <p>
-<img src="assets/Smart Brain App - Sign In Page.png" alt="Smart Brain App Cover design" width=800px />
+<img src="assets/Smart Brain App Sign In Page.PNG" alt="Smart Brain App Sign In Page" width=800px />
 </p>
 
 
