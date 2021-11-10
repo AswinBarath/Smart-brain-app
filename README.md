@@ -1,70 +1,83 @@
-# Getting Started with Create React App
+# Smart Brain App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<p>
+<img src="assets/Smart brain React app.png" alt="Smart Brain App Cover design" width=800px />
+</p>
 
-## Available Scripts
+Face recognition app built with Authentication, User Ranking, REST API and SQL transactions for user data
+and hashed passwords
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Table of content
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Demo](#Demo)
+- [Screenshots](#Screenshots)
+- [Technologies](#Technologies)
+- [What's unique in this Project](#whats-unique-in-this-project)
+- [Contributors](#Contributors)
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `npm test`
+## Demo
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<p>
+  <img src="./assets/Smart brain React app demo-min.gif" alt="Smart Brain App Demo" width=800px />
+</p>
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Screenshots
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Home Page
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<p>
+<img src="assets/Smart Brain App - Home Page.png" alt="Smart Brain App Cover design" width=800px />
+</p>
 
-### `npm run eject`
+### User Registeration Page
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+<p>
+<img src="assets/Smart Brain App - Register Page.png" alt="Smart Brain App Cover design" width=800px />
+</p>
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### User Login Page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+<p>
+<img src="assets/Smart Brain App - Sign In Page.png" alt="Smart Brain App Cover design" width=800px />
+</p>
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Technologies
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+&nbsp;
+![Express JS](https://img.shields.io/badge/Express.js-404D59?style=for-the-badge)
+&nbsp;
+![React JS](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+&nbsp;
+![Node JS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+&nbsp;
+![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)
+&nbsp;
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## What's unique in this Project
 
-### Analyzing the Bundle Size
+- An Image Recognition app which makes an API request to face recognition machine learning model
+- The App has built-in Authentication which takes care of the user login credentials securely through hashing
+- User Ranking is provided each time the Smart Brain Web App service is triggered for facial detection of images
+- The web app employs custom REST API on the backend with SQL transactions for user data and hashed passwords
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
+## Contributors
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- T Aswin Barath <https://github.com/AswinBarath>
 
-### Advanced Configuration
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+**[⬆ Back to Top](#Smart-Brain-App)**
