@@ -72,29 +72,61 @@ class App extends Component {
 
   calculateFaceLocation = (data) => {
     try {
-      // Check if the response has the expected structure
-      if (!data || !data.outputs || !data.outputs[0] || !data.outputs[0].data || !data.outputs[0].data.regions || !data.outputs[0].data.regions[0]) {
-        console.log('No face detected or invalid response structure:', data);
+      console.log('API Response:', data);
+      
+      // Handle error response from API
+      if (typeof data === 'string' && data.includes('unable to work with API')) {
+        console.log('API Error:', data);
         return null;
       }
       
-      const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-      const image = document.getElementById('inputimage');
-      
-      if (!image) {
-        console.log('Image element not found');
-        return null;
+      // Check if the response has the expected structure for newer Clarifai API
+      if (data && data.outputs && data.outputs[0] && data.outputs[0].data) {
+        const regions = data.outputs[0].data.regions;
+        if (regions && regions.length > 0) {
+          const clarifaiFace = regions[0].region_info.bounding_box;
+          const image = document.getElementById('inputimage');
+          
+          if (!image) {
+            console.log('Image element not found');
+            return null;
+          }
+          
+          const width = Number(image.width);
+          const height = Number(image.height);
+          
+          return {
+            leftCol: clarifaiFace.left_col * width,
+            topRow: clarifaiFace.top_row * height,
+            rightCol: width - (clarifaiFace.right_col * width),
+            bottomRow: height - (clarifaiFace.bottom_row * height)
+          }
+        }
       }
       
-      const width = Number(image.width);
-      const height = Number(image.height);
-      
-      return {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - (clarifaiFace.right_col * width),
-        bottomRow: height - (clarifaiFace.bottom_row * height)
+      // Check for alternative response structure
+      if (data && data.data && data.data.regions && data.data.regions.length > 0) {
+        const clarifaiFace = data.data.regions[0].region_info.bounding_box;
+        const image = document.getElementById('inputimage');
+        
+        if (!image) {
+          console.log('Image element not found');
+          return null;
+        }
+        
+        const width = Number(image.width);
+        const height = Number(image.height);
+        
+        return {
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - (clarifaiFace.right_col * width),
+          bottomRow: height - (clarifaiFace.bottom_row * height)
+        }
       }
+      
+      console.log('No face detected or invalid response structure:', data);
+      return null;
     } catch (error) {
       console.log('Error calculating face location:', error);
       return null;
@@ -120,6 +152,17 @@ class App extends Component {
       })
       .then(response => response.json())
       .then(response => {
+        console.log('Full API Response:', response);
+        
+        // Check if API returned an error
+        if (typeof response === 'string' && response.includes('unable to work with API')) {
+          this.setState({ 
+            isLoading: false, 
+            error: 'API service temporarily unavailable. Please try again later.' 
+          });
+          return;
+        }
+        
         if(response) {
           fetch(API_ENDPOINTS.IMAGE, {
             method: 'put',
@@ -134,19 +177,28 @@ class App extends Component {
               user: { ...prevState.user, entries: count }
             }))
           })
-          .catch(console.log)
+          .catch(err => {
+            console.log('Error updating entries:', err);
+          })
         }
+        
         const box = this.calculateFaceLocation(response);
         if (box) {
           this.displayFaceBox(box);
           this.setState({ isLoading: false });
         } else {
-          this.setState({ isLoading: false, error: 'No face detected in the image.' });
+          this.setState({ 
+            isLoading: false, 
+            error: 'No face detected in the image. Please try a different image with a clear face.' 
+          });
         }
       })
       .catch(err => {
-        this.setState({ isLoading: false, error: 'Error processing image. Please try again.' });
-        console.log(err);
+        console.log('Network error:', err);
+        this.setState({ 
+          isLoading: false, 
+          error: 'Network error. Please check your internet connection and try again.' 
+        });
       });
   }
 
