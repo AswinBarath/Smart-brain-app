@@ -7,6 +7,7 @@ import Register from './components/Register/Register'
 import Logo from './components/Logo/Logo'
 import Rank from './components/Rank/Rank'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm'
+import { API_ENDPOINTS } from './config';
 import './App.css';
 
 const particlesOptions = {
@@ -33,7 +34,9 @@ const initialState = {
         email: '',
         entries: 0,
         joined: ''
-      }
+      },
+      isLoading: false,
+      error: ''
 }
 
 class App extends Component {
@@ -51,7 +54,9 @@ class App extends Component {
         email: '',
         entries: 0,
         joined: ''
-      }
+      },
+      isLoading: false,
+      error: ''
     }
   }
 
@@ -87,8 +92,8 @@ class App extends Component {
   }
 
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input})
-      fetch('https://smart-brain-api-26.herokuapp.com/imageurl', {
+    this.setState({imageUrl: this.state.input, isLoading: true, error: ''})
+      fetch(API_ENDPOINTS.IMAGE_URL, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -98,7 +103,7 @@ class App extends Component {
       .then(response => response.json())
       .then(response => {
         if(response) {
-          fetch('https://smart-brain-api-26.herokuapp.com/image', {
+          fetch(API_ENDPOINTS.IMAGE, {
             method: 'put',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -112,8 +117,12 @@ class App extends Component {
           .catch(console.log)
         }
         this.displayFaceBox(this.calculateFaceLocation(response))
+        this.setState({ isLoading: false });
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ isLoading: false, error: 'Error processing image. Please try again.' });
+        console.log(err);
+      });
   }
 
   onRouteChange = (route) => {
@@ -140,6 +149,8 @@ class App extends Component {
                   <ImageLinkForm
                     onInputChange={this.onInputChange}
                     onButtonSubmit={this.onButtonSubmit}
+                    isLoading={this.state.isLoading}
+                    error={this.state.error}
                   />
                   <FaceRecognition box={box} imageUrl={imageUrl}/>
                 </div>

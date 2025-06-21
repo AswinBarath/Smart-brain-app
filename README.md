@@ -11,11 +11,18 @@ and hashed passwords
 
 ## Table of content
 
-- [Demo](#Demo)
-- [Screenshots](#Screenshots)
-- [Technologies](#Technologies)
-- [What's unique in this Project](#whats-unique-in-this-project)
-- [Contributors](#Contributors)
+- [Smart Brain App](#smart-brain-app)
+  - [Table of content](#table-of-content)
+  - [Demo](#demo)
+  - [Screenshots](#screenshots)
+    - [Home Page](#home-page)
+    - [User Registeration Page](#user-registeration-page)
+    - [User Login Page](#user-login-page)
+  - [Technologies](#technologies)
+  - [What's unique in this Project](#whats-unique-in-this-project)
+  - [Contributors](#contributors)
+  - [Deployment](#deployment)
+  - [Summary of New Changes Made](#summary-of-new-changes-made)
 
 ---
 
@@ -86,6 +93,15 @@ and hashed passwords
 - Github pages README (Docs): [https://aswinbarath.github.io/Smart-brain-app/]((https://aswinbarath.github.io/Smart-brain-app/)
 - Old Link (Heroku introduced $5/month pricing plan - no free plan): [https://smart-brain-26.herokuapp.com/](https://smart-brain-26.herokuapp.com/)
 
+
+---
+
+## Summary of New Changes Made
+API Endpoints Updated: All API calls now use the new Vercel-hosted API (https://smart-brain-api-one.vercel.app).
+Centralized API Config: Added src/config.js to manage API URLs in one place.
+Error Handling & Loading States: Added user feedback for loading and error states in Signin, Register, and image processing.
+UI Feedback: The UI now disables buttons and shows messages during loading/error states.
+Proxy Added: Added a proxy field in package.json for local development convenience.
 
 ---
 
