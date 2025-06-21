@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = 'https://smart-brain-api-one.vercel.app';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://smart-brain-api-one.vercel.app';
 
 export const API_ENDPOINTS = {
   SIGNIN: `${API_BASE_URL}/signin`,
