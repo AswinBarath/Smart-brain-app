@@ -71,15 +71,33 @@ class App extends Component {
   }
 
   calculateFaceLocation = (data) => {
-    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
-    const image = document.getElementById('inputimage');
-    const width = Number(image.width);
-    const height = Number(image.height);
-    return {
-      leftCol: clarifaiFace.left_col * width,
-      topRow: clarifaiFace.top_row * height,
-      rightCol: width - (clarifaiFace.right_col * width),
-      bottomRow: height - (clarifaiFace.bottom_row * height)
+    try {
+      // Check if the response has the expected structure
+      if (!data || !data.outputs || !data.outputs[0] || !data.outputs[0].data || !data.outputs[0].data.regions || !data.outputs[0].data.regions[0]) {
+        console.log('No face detected or invalid response structure:', data);
+        return null;
+      }
+      
+      const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+      const image = document.getElementById('inputimage');
+      
+      if (!image) {
+        console.log('Image element not found');
+        return null;
+      }
+      
+      const width = Number(image.width);
+      const height = Number(image.height);
+      
+      return {
+        leftCol: clarifaiFace.left_col * width,
+        topRow: clarifaiFace.top_row * height,
+        rightCol: width - (clarifaiFace.right_col * width),
+        bottomRow: height - (clarifaiFace.bottom_row * height)
+      }
+    } catch (error) {
+      console.log('Error calculating face location:', error);
+      return null;
     }
   }
   
@@ -112,12 +130,19 @@ class App extends Component {
           })
           .then(response => response.json())
           .then(count => {
-            this.setState(Object.assign(this.state.user, {entries: count}))
+            this.setState(prevState => ({
+              user: { ...prevState.user, entries: count }
+            }))
           })
           .catch(console.log)
         }
-        this.displayFaceBox(this.calculateFaceLocation(response))
-        this.setState({ isLoading: false });
+        const box = this.calculateFaceLocation(response);
+        if (box) {
+          this.displayFaceBox(box);
+          this.setState({ isLoading: false });
+        } else {
+          this.setState({ isLoading: false, error: 'No face detected in the image.' });
+        }
       })
       .catch(err => {
         this.setState({ isLoading: false, error: 'Error processing image. Please try again.' });
