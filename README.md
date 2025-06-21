@@ -82,8 +82,9 @@ and hashed passwords
 
 ## Deployment
 
-- Vercel Deployment (New Link): https://smart-brain-907r3fisi-aswinbaraths-projects.vercel.app/
-- Old Link (Heroku introduced $5/month pricing plan - no free plan): https://smart-brain-26.herokuapp.com/
+- Vercel Deployment (New Link): [https://smart-brain-907r3fisi-aswinbaraths-projects.vercel.app/](https://smart-brain-907r3fisi-aswinbaraths-projects.vercel.app/)
+- Github pages README (Docs): [https://aswinbarath.github.io/Smart-brain-app/]((https://aswinbarath.github.io/Smart-brain-app/)
+- Old Link (Heroku introduced $5/month pricing plan - no free plan): [https://smart-brain-26.herokuapp.com/](https://smart-brain-26.herokuapp.com/)
 
 
 ---
