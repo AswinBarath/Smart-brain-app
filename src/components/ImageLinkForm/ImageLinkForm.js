@@ -1,7 +1,7 @@
 import React from 'react';
 import './ImageLinkForm.css'
 
-const ImageLinkForm = ({ onInputChange, onButtonSubmit, isLoading, error }) => {
+const ImageLinkForm = ({ onInputChange, onButtonSubmit, onTestAPI, isLoading, error }) => {
     return (
     <div>
         <p className='f3 near-white'>
@@ -26,6 +26,14 @@ const ImageLinkForm = ({ onInputChange, onButtonSubmit, isLoading, error }) => {
                  onClick={onButtonSubmit}
                  disabled={isLoading}>
                      {isLoading ? 'Detecting...' : 'Detect'}
+                </button>
+            </div>
+            <div className='mt3'>
+                <button
+                 className='f6 link ph3 pv2 dib white bg-dark-blue'
+                 onClick={onTestAPI}
+                 disabled={isLoading}>
+                     Test API
                 </button>
             </div>
             </div>

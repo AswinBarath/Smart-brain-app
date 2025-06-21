@@ -141,16 +141,75 @@ class App extends Component {
     this.setState({input: event.target.value});
   }
 
+  // Test function to debug API
+  testAPI = () => {
+    console.log('Testing API endpoints...');
+    console.log('API Base URL:', API_ENDPOINTS.IMAGE_URL);
+    
+    // Test with a known working image URL
+    const testImageUrl = 'https://samples.clarifai.com/face-det.jpg';
+    console.log('Testing with image URL:', testImageUrl);
+    
+    fetch(API_ENDPOINTS.IMAGE_URL, {
+      method: 'post',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+          input: testImageUrl
+      })
+    })
+    .then(response => {
+      console.log('Test API Response Status:', response.status);
+      console.log('Test API Response Headers:', response.headers);
+      return response.text();
+    })
+    .then(text => {
+      console.log('Test API Response Text:', text);
+      try {
+        const json = JSON.parse(text);
+        console.log('Test API Response JSON:', json);
+      } catch (e) {
+        console.log('Test API Response is not JSON:', text);
+      }
+    })
+    .catch(err => {
+      console.log('Test API Error:', err);
+    });
+  }
+
   onButtonSubmit = () => {
-    this.setState({imageUrl: this.state.input, isLoading: true, error: ''})
-      fetch(API_ENDPOINTS.IMAGE_URL, {
+    const imageUrl = this.state.input.trim();
+    
+    // Validate input
+    if (!imageUrl) {
+      this.setState({ error: 'Please enter an image URL.' });
+      return;
+    }
+    
+    // Basic URL validation
+    try {
+      new URL(imageUrl);
+    } catch (e) {
+      this.setState({ error: 'Please enter a valid image URL.' });
+      return;
+    }
+    
+    console.log('Sending image URL to API:', imageUrl);
+    this.setState({imageUrl: imageUrl, isLoading: true, error: ''})
+    
+    fetch(API_ENDPOINTS.IMAGE_URL, {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-            input: this.state.input
+            input: imageUrl
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log('API Response Status:', response.status);
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then(response => {
         console.log('Full API Response:', response);
         
@@ -195,9 +254,17 @@ class App extends Component {
       })
       .catch(err => {
         console.log('Network error:', err);
+        let errorMessage = 'Network error. Please check your internet connection and try again.';
+        
+        if (err.message.includes('400')) {
+          errorMessage = 'Invalid image URL or API request. Please check the URL and try again.';
+        } else if (err.message.includes('500')) {
+          errorMessage = 'Server error. Please try again later.';
+        }
+        
         this.setState({ 
           isLoading: false, 
-          error: 'Network error. Please check your internet connection and try again.' 
+          error: errorMessage
         });
       });
   }
@@ -226,6 +293,7 @@ class App extends Component {
                   <ImageLinkForm
                     onInputChange={this.onInputChange}
                     onButtonSubmit={this.onButtonSubmit}
+                    onTestAPI={this.testAPI}
                     isLoading={this.state.isLoading}
                     error={this.state.error}
                   />
@@ -242,3 +310,4 @@ class App extends Component {
 }
 
 export default App;
+
