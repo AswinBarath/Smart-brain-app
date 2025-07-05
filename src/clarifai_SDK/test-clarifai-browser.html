@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarifai SDK Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .test-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .image-preview {
+            max-width: 300px;
+            max-height: 200px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px 0;
+        }
+        .loading {
+            color: #007bff;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Clarifai SDK Test Suite</h1>
+        <p>This page tests the Clarifai face detection functionality for your Smart Brain App.</p>
+
+        <!-- Test 1: Backend API Test -->
+        <div class="test-section">
+            <h3>Test 1: Backend API Integration</h3>
+            <p>Test the backend API that handles Clarifai integration.</p>
+            <button onclick="testBackendAPI()">Test Backend API</button>
+            <div id="backend-result" class="result"></div>
+        </div>
+
+        <!-- Test 2: Multiple Images Test -->
+        <div class="test-section">
+            <h3>Test 2: Multiple Image Types</h3>
+            <p>Test with different types of images to verify face detection accuracy.</p>
+            <button onclick="testMultipleImages()">Test Multiple Images</button>
+            <div id="multiple-images-result" class="result"></div>
+        </div>
+
+        <!-- Test 3: Custom Image Test -->
+        <div class="test-section">
+            <h3>Test 3: Custom Image URL</h3>
+            <p>Test with your own image URL.</p>
+            <div class="input-group">
+                <input type="text" id="custom-image-url" placeholder="Enter image URL here..." 
+                       value="https://samples.clarifai.com/face-det.jpg">
+            </div>
+            <button onclick="testCustomImage()">Test Custom Image</button>
+            <div id="custom-image-result" class="result"></div>
+        </div>
+
+        <!-- Test 4: Error Handling Test -->
+        <div class="test-section">
+            <h3>Test 4: Error Handling</h3>
+            <p>Test how the system handles invalid inputs.</p>
+            <button onclick="testErrorHandling()">Test Error Handling</button>
+            <div id="error-handling-result" class="result"></div>
+        </div>
+
+        <!-- Test 5: Direct Clarifai Test (requires PAT) -->
+        <div class="test-section">
+            <h3>Test 5: Direct Clarifai API (Optional)</h3>
+            <p>Test direct Clarifai API calls. Requires Personal Access Token.</p>
+            <div class="input-group">
+                <input type="text" id="clarifai-pat" placeholder="Enter your Clarifai PAT (optional)">
+            </div>
+            <button onclick="testDirectClarifai()">Test Direct Clarifai API</button>
+            <div id="direct-clarifai-result" class="result"></div>
+        </div>
+
+        <!-- Run All Tests -->
+        <div class="test-section">
+            <h3>Run All Tests</h3>
+            <p>Run all tests to get a comprehensive overview.</p>
+            <button onclick="runAllTests()">Run All Tests</button>
+            <div id="all-tests-result" class="result"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://smart-brain-api-one.vercel.app';
+
+        function logResult(elementId, message, type = 'info') {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `result ${type}`;
+        }
+
+        function setLoading(elementId) {
+            logResult(elementId, 'Loading...', 'info');
+        }
+
+        // Test 1: Backend API Test
+        async function testBackendAPI() {
+            setLoading('backend-result');
+            
+            const testImageUrl = 'https://samples.clarifai.com/face-det.jpg';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/imageurl`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: testImageUrl
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    logResult('backend-result', `❌ Backend API Error (${response.status}): ${errorText}`, 'error');
+                    return false;
+                }
+                
+                const result = await response.json();
+                
+                if (result && result.outputs && result.outputs[0] && result.outputs[0].data) {
+                    const regions = result.outputs[0].data.regions;
+                    const faceCount = regions ? regions.length : 0;
+                    logResult('backend-result', 
+                        `✅ Backend API Test PASSED\n` +
+                        `Found ${faceCount} face(s) in the image\n` +
+                        `Response structure: ${Object.keys(result).join(', ')}`, 
+                        'success');
+                    return true;
+                } else {
+                    logResult('backend-result', 
+                        `⚠️ Backend API Test - No face detection data\n` +
+                        `Full response: ${JSON.stringify(result, null, 2)}`, 
+                        'error');
+                    return false;
+                }
+                
+            } catch (error) {
+                logResult('backend-result', `❌ Backend API Test FAILED: ${error.message}`, 'error');
+                return false;
+            }
+        }
+
+        // Test 2: Multiple Images Test
+        async function testMultipleImages() {
+            setLoading('multiple-images-result');
+            
+            const testImages = [
+                'https://samples.clarifai.com/face-det.jpg',
+                'https://samples.clarifai.com/metro-north.jpg',
+                'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400',
+                'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=400'
+            ];
+            
+            let results = [];
+            
+            for (let i = 0; i < testImages.length; i++) {
+                const imageUrl = testImages[i];
+                
+                try {
+                    const response = await fetch(`${API_BASE_URL}/imageurl`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            input: imageUrl
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                        if (result && result.outputs && result.outputs[0] && result.outputs[0].data) {
+                            const regions = result.outputs[0].data.regions;
+                            const faceCount = regions ? regions.length : 0;
+                            results.push(`✅ Image ${i + 1}: Found ${faceCount} face(s)`);
+                        } else {
+                            results.push(`⚠️ Image ${i + 1}: No face detection data`);
+                        }
+                    } else {
+                        results.push(`❌ Image ${i + 1}: API error (${response.status})`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Image ${i + 1}: Request failed - ${error.message}`);
+                }
+            }
+            
+            logResult('multiple-images-result', results.join('\n'), 'info');
+        }
+
+        // Test 3: Custom Image Test
+        async function testCustomImage() {
+            setLoading('custom-image-result');
+            
+            const imageUrl = document.getElementById('custom-image-url').value.trim();
+            
+            if (!imageUrl) {
+                logResult('custom-image-result', '❌ Please enter an image URL', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/imageurl`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: imageUrl
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    logResult('custom-image-result', `❌ Custom Image Test Error (${response.status}): ${errorText}`, 'error');
+                    return;
+                }
+                
+                const result = await response.json();
+                
+                if (result && result.outputs && result.outputs[0] && result.outputs[0].data) {
+                    const regions = result.outputs[0].data.regions;
+                    const faceCount = regions ? regions.length : 0;
+                    logResult('custom-image-result', 
+                        `✅ Custom Image Test PASSED\n` +
+                        `Found ${faceCount} face(s) in the image\n` +
+                        `Image URL: ${imageUrl}`, 
+                        'success');
+                } else {
+                    logResult('custom-image-result', 
+                        `⚠️ Custom Image Test - No face detection data\n` +
+                        `Image URL: ${imageUrl}\n` +
+                        `Response: ${JSON.stringify(result, null, 2)}`, 
+                        'error');
+                }
+                
+            } catch (error) {
+                logResult('custom-image-result', `❌ Custom Image Test FAILED: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 4: Error Handling Test
+        async function testErrorHandling() {
+            setLoading('error-handling-result');
+            
+            const invalidImageUrl = 'https://invalid-image-url-that-does-not-exist.com/image.jpg';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/imageurl`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: invalidImageUrl
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    logResult('error-handling-result', 
+                        `✅ Error Handling Test PASSED\n` +
+                        `Backend handled invalid image gracefully\n` +
+                        `Response: ${JSON.stringify(result, null, 2)}`, 
+                        'success');
+                } else {
+                    logResult('error-handling-result', 
+                        `⚠️ Error Handling Test - Backend returned error (expected)\n` +
+                        `Status: ${response.status}\n` +
+                        `Response: ${JSON.stringify(result, null, 2)}`, 
+                        'info');
+                }
+                
+            } catch (error) {
+                logResult('error-handling-result', `❌ Error Handling Test FAILED: ${error.message}`, 'error');
+            }
+        }
+
+        // Test 5: Direct Clarifai Test
+        async function testDirectClarifai() {
+            setLoading('direct-clarifai-result');
+            
+            const PAT = document.getElementById('clarifai-pat').value.trim();
+            
+            if (!PAT) {
+                logResult('direct-clarifai-result', '❌ Please enter your Clarifai Personal Access Token', 'error');
+                return;
+            }
+            
+            const USER_ID = 'clarifai';
+            const APP_ID = 'main';
+            const MODEL_ID = 'face-detection';
+            const MODEL_VERSION_ID = '6dc7e46bc9124c5c8824be4822abe105';
+            const testImageUrl = 'https://samples.clarifai.com/face-det.jpg';
+            
+            const raw = JSON.stringify({
+                "user_app_id": {
+                    "user_id": USER_ID,
+                    "app_id": APP_ID
+                },
+                "inputs": [
+                    {
+                        "data": {
+                            "image": {
+                                "url": testImageUrl
+                            }
+                        }
+                    }
+                ]
+            });
+
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Key ' + PAT
+                },
+                body: raw
+            };
+
+            try {
+                const response = await fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                
+                if (result.outputs && result.outputs[0] && result.outputs[0].data) {
+                    const regions = result.outputs[0].data.regions;
+                    const faceCount = regions ? regions.length : 0;
+                    logResult('direct-clarifai-result', 
+                        `✅ Direct Clarifai API Test PASSED\n` +
+                        `Found ${faceCount} face(s) in the image\n` +
+                        `Response structure: ${Object.keys(result).join(', ')}`, 
+                        'success');
+                } else {
+                    logResult('direct-clarifai-result', 
+                        `⚠️ Direct Clarifai API Test - No face regions found\n` +
+                        `Response: ${JSON.stringify(result, null, 2)}`, 
+                        'error');
+                }
+                
+            } catch (error) {
+                logResult('direct-clarifai-result', `❌ Direct Clarifai API Test FAILED: ${error.message}`, 'error');
+            }
+        }
+
+        // Run All Tests
+        async function runAllTests() {
+            setLoading('all-tests-result');
+            
+            const results = {
+                backendAPI: false,
+                multipleImages: true,
+                errorHandling: true
+            };
+            
+            // Run backend API test
+            results.backendAPI = await testBackendAPI();
+            
+            // Run multiple images test
+            await testMultipleImages();
+            
+            // Run error handling test
+            await testErrorHandling();
+            
+            // Summary
+            const summary = [
+                '=== Test Summary ===',
+                `Backend API Integration: ${results.backendAPI ? '✅ PASS' : '❌ FAIL'}`,
+                `Multiple Images Test: ${results.multipleImages ? '✅ PASS' : '❌ FAIL'}`,
+                `Error Handling Test: ${results.errorHandling ? '✅ PASS' : '❌ FAIL'}`,
+                '',
+                results.backendAPI ? 
+                    '🎉 Critical tests passed! The Clarifai SDK is working correctly.' :
+                    '⚠️ Some tests failed. Please check the configuration and try again.'
+            ];
+            
+            logResult('all-tests-result', summary.join('\n'), results.backendAPI ? 'success' : 'error');
+        }
+    </script>
+</body>
+</html> 

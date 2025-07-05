@@ -1,0 +1,45 @@
+[23:19:48.919] Running build in Washington, D.C., USA (East) – iad1 (Hive)
+[23:19:49.004] Cloning github.com/AswinBarath/Smart-brain-app (Branch: main, Commit: 492b96e)
+[23:19:50.333] Previous build cache not available
+[23:19:50.913] Cloning completed: 1.909s
+[23:19:51.148] Running "vercel build"
+[23:19:51.660] Vercel CLI 32.1.0
+[23:19:52.243] Installing dependencies...
+[23:19:53.893] npm notice 
+[23:19:53.893] npm notice New major version of npm available! 9.6.7 -> 10.0.0
+[23:19:53.893] npm notice Changelog: <https://github.com/npm/cli/releases/tag/v10.0.0>
+[23:19:53.894] npm notice Run `npm install -g npm@10.0.0` to update!
+[23:19:53.894] npm notice 
+[23:19:53.895] npm ERR! code ERESOLVE
+[23:19:53.897] npm ERR! ERESOLVE could not resolve
+[23:19:53.897] npm ERR! 
+[23:19:53.897] npm ERR! While resolving: react-particles-js@3.4.1
+[23:19:53.897] npm ERR! Found: react@17.0.1
+[23:19:53.897] npm ERR! node_modules/react
+[23:19:53.897] npm ERR!   react@"^17.0.1" from the root project
+[23:19:53.898] npm ERR!   peer react@"*" from @testing-library/react@11.2.5
+[23:19:53.898] npm ERR!   node_modules/@testing-library/react
+[23:19:53.898] npm ERR!     @testing-library/react@"^11.2.5" from the root project
+[23:19:53.898] npm ERR!   2 more (react-dom, react-scripts)
+[23:19:53.898] npm ERR! 
+[23:19:53.898] npm ERR! Could not resolve dependency:
+[23:19:53.898] npm ERR! peer react@"^16.0.0" from react-particles-js@3.4.1
+[23:19:53.898] npm ERR! node_modules/react-particles-js
+[23:19:53.898] npm ERR!   react-particles-js@"^3.4.1" from the root project
+[23:19:53.898] npm ERR! 
+[23:19:53.898] npm ERR! Conflicting peer dependency: react@16.14.0
+[23:19:53.898] npm ERR! node_modules/react
+[23:19:53.898] npm ERR!   peer react@"^16.0.0" from react-particles-js@3.4.1
+[23:19:53.898] npm ERR!   node_modules/react-particles-js
+[23:19:53.898] npm ERR!     react-particles-js@"^3.4.1" from the root project
+[23:19:53.899] npm ERR! 
+[23:19:53.899] npm ERR! Fix the upstream dependency conflict, or retry
+[23:19:53.899] npm ERR! this command with --force or --legacy-peer-deps
+[23:19:53.899] npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+[23:19:53.899] npm ERR! 
+[23:19:53.899] npm ERR! 
+[23:19:53.899] npm ERR! For a full report see:
+[23:19:53.899] npm ERR! /vercel/.npm/_logs/2023-09-04T17_49_52_593Z-eresolve-report.txt
+[23:19:53.900] 
+[23:19:53.900] npm ERR! A complete log of this run can be found in: /vercel/.npm/_logs/2023-09-04T17_49_52_593Z-debug-0.log
+[23:19:53.918] Error: Command "npm install" exited with 1
